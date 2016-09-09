@@ -5,18 +5,50 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.decorators import permission_classes
-from rest_framework import status, generics
+from rest_framework import status, generics, viewsets
 from core.models import ItemList, Item
-from core.serializers import ItemSerializer
+
+from django.contrib.auth.models import User, Group
+
+from rest_framework.decorators import api_view
+from rest_framework.reverse import reverse
 
 
-class ItemsAll(APIView):
-    def get(self, request, format=None):
-        item = Item.objects.all().order_by('-created_date')
-        serializer = ItemSerializer(item, many=True)
-        return Response(serializer.data)
+from core.serializers import UserSerializer, GroupSerializer, ItemSerializer, ItemListSerializer
 
 
-class ItemDetail(generics.RetrieveUpdateDestroyAPIView):
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+
+class ItemViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+
+
+class ItemListViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = ItemList.objects.all()
+    serializer_class = ItemListSerializer
+
+
+
+
+

@@ -14,6 +14,8 @@ from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 
 
+
+
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + ('description',)
 
 
@@ -48,11 +50,13 @@ class ItemList(Page):
     completed_date = models.DateField(blank=True, null=True)
 
     content_panels = [
+
         FieldPanel('title', classname="full title"),
         FieldPanel('due_date'),
         FieldPanel('completed'),
         FieldPanel('completed_date'),
-        InlinePanel('item', label='Заявка')
+        InlinePanel('item', label='Заявка'),
+
     ]
 
 
@@ -86,11 +90,10 @@ class Item(Orderable):
         return self.title
 
     # Auto-set the item creation / completed date
-    def save(self):
-        # If Item is being marked complete, set the completed_date
-        if self.completed:
-            self.completed_date = datetime.datetime.now()
-        super(Item, self).save()
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+
+        super(Item, self).save(force_insert=force_insert, force_update=force_update, *args, **kwargs)
+
 
     class Meta:
         ordering = ["priority"]
