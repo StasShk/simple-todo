@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% load static  wagtailcore_tags  wagtailimages_tags %}
+
+
+{% block extra_js %}
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
+        
+
+<script>
+    FeatureStyles.MainFeatures.setSize({{ self.full_bleed_image_size }});
+</script>
+{% endblock %}
+
+
+{% block content %}
+	{% verbatim %}
+
+
+<div >
+
+  <ul>
+    <li ng-repeat="phone in phones">
+      <span>{{phone.name}}</span>
+      <p>{{phone.snippet}}</p>
+    </li>
+  </ul>
+
+</div>
+{% endverbatim  %}
+
+
+
+{% verbatim %}
+<label>Введите имя:</label>
+<input type="text" ng-model="name" placeholder="Введите имя">
+ 
+<h1>Добро пожаловать {{name}}!</h1>
+{% endverbatim  %}
+      
+
+
+{% endblock %}
